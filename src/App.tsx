@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Movies from "./components/Movies";
+import NavbarMenu from "./components/NavbarMenu";
+import ToggleThemeBtn from "./components/ToggleThemeBtn";
+import MovieContextProvider from "./contexts/MovieContext";
+import ProgressContextProvider from "./contexts/ProgressContext";
+import ThemeContextProvider from "./contexts/ThemeContext";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <MovieContextProvider>
+            <ProgressContextProvider>
+                <ThemeContextProvider>
+                    <NavbarMenu />
+                    <Movies />
+                    <ToggleThemeBtn />
+                </ThemeContextProvider>
+            </ProgressContextProvider>
+        </MovieContextProvider>
+    );
 }
 
 export default App;
