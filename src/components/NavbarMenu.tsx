@@ -5,13 +5,21 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { ProgressContext } from "../contexts/ProgressContext";
 import { ThemeContext } from "../contexts/ThemeContext";
+import Login from "./Login";
+import { AuthContext } from "../contexts/AuthContext";
 
 const NavbarMenu = () => {
     // context
+    const {
+        authInfo: { isAuthenticated },
+        toggleAuth,
+    } = useContext(AuthContext);
     const { lastTime, status } = useContext(ProgressContext);
     const { theme } = useContext(ThemeContext);
     const [position, setPosition] = useState<string>("Full-stack Developer");
     const [time, setTime] = useState<Date>(() => new Date(Date.now()));
+
+    const [loginOpen, setLoginOpen] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -23,6 +31,7 @@ const NavbarMenu = () => {
     const onPositionChange = (event: ChangeEvent<{ value: string }>) => {
         setPosition(event.target.value);
     };
+
     return (
         <Navbar bg={theme} variant="light">
             <Container>
@@ -51,9 +60,23 @@ const NavbarMenu = () => {
                 </div>
                 <div className="d-flex flex-column align-items-center">
                     <h5 className="mb-1">{time.toUTCString()}</h5>
-                    <Button variant="dark">Login</Button>
+                    <Button
+                        variant="dark"
+                        onClick={
+                            isAuthenticated
+                                ? () => {
+                                      toggleAuth("");
+                                  }
+                                : () => {
+                                      setLoginOpen(true);
+                                  }
+                        }
+                    >
+                        {isAuthenticated ? "Logout" : "Login"}
+                    </Button>
                 </div>
             </Container>
+            <Login isOpen={loginOpen} setIsOpen={setLoginOpen} />
         </Navbar>
     );
 };
